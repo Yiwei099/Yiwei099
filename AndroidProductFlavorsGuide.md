@@ -341,8 +341,8 @@ src/banana/res/
 ./gradlew assembleRelease
 
 # 构建特定风味
-./gradlew assembleFengyueRelease
-./gradlew assembleHuayuRelease
+./gradlew assembleBananaRelease
+./gradlew assembleAppleRelease
 
 # 清理后重新构建
 ./gradlew clean assembleRelease
