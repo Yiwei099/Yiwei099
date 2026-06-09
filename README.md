@@ -1,4 +1,8 @@
-## Hi there 👋
+## Hi there welcome to my profile👋
+
+- 🌱 Some of my experiences
+  -  [Android 多风味（Product Flavors）配置指南](https://github.com/Yiwei099/Yiwei099/blob/main/AndroidProductFlavorsGuide.md)
+  -  [Sherpa 离线语音识别集成指南](https://github.com/Yiwei099/Yiwei099/blob/main/AndroidSherpaONNXGuide.md)
 
 <!--
 **Yiwei099/Yiwei099** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
