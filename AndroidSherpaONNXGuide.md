@@ -85,10 +85,10 @@ init {
 
 // ...other code
 
-val encoderFile = copyAssetToCache(ComposeAIApp.instance, "$modelDir/encoder.int8.onnx")
-val decoderFile = copyAssetToCache(ComposeAIApp.instance, "$modelDir/decoder.onnx")
-val joinerFile = copyAssetToCache(ComposeAIApp.instance, "$modelDir/joiner.int8.onnx")
-val tokensFile = copyAssetToCache(ComposeAIApp.instance, "$modelDir/tokens.txt")
+val encoderFile = copyAssetToCache(context, "$modelDir/encoder.int8.onnx")
+val decoderFile = copyAssetToCache(context, "$modelDir/decoder.onnx")
+val joinerFile = copyAssetToCache(context, "$modelDir/joiner.int8.onnx")
+val tokensFile = copyAssetToCache(context, "$modelDir/tokens.txt")
 initWithPaths(ModelPaths(
    encoderPath = encoderFile.absolutePath,
    decoderPath = decoderFile.absolutePath,
@@ -136,7 +136,7 @@ private fun initWithPaths(paths: ModelPaths) {
 ```
 6. 初始化标点恢复模型
 ```kotlin
-val modelFile = copyAssetToCache(ComposeAIApp.instance, "$punctuationDir/model.int8.onnx")
+val modelFile = copyAssetToCache(context, "$punctuationDir/model.int8.onnx")
 try {
    val modelConfig = OfflinePunctuationModelConfig(
       ctTransformer = modelFile.absolutePath,
