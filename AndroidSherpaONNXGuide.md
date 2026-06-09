@@ -70,6 +70,114 @@ dependencies {
 <uses-feature android:name="android.hardware.microphone" android:required="false" />
 ```
 
+5. 初始化语音识别引擎
+
+```kotlin
+// 加载 Native 库
+init {
+    try {
+        System.loadLibrary("sherpa-onnx-jni")
+        Log.d(TAG, "Native 库加载成功")
+    } catch (e: UnsatisfiedLinkError) {
+        Log.e(TAG, "Native 库加载失败: ${e.message}")
+    }
+}
+
+// ...other code
+
+val encoderFile = copyAssetToCache(ComposeAIApp.instance, "$modelDir/encoder.int8.onnx")
+val decoderFile = copyAssetToCache(ComposeAIApp.instance, "$modelDir/decoder.onnx")
+val joinerFile = copyAssetToCache(ComposeAIApp.instance, "$modelDir/joiner.int8.onnx")
+val tokensFile = copyAssetToCache(ComposeAIApp.instance, "$modelDir/tokens.txt")
+initWithPaths(ModelPaths(
+   encoderPath = encoderFile.absolutePath,
+   decoderPath = decoderFile.absolutePath,
+   joinerPath = joinerFile.absolutePath,
+   tokensPath = tokensFile.absolutePath,
+))
+
+private fun initWithPaths(paths: ModelPaths) {
+   try {
+      // 配置特征提取
+      val featConfig = FeatureConfig().apply {
+         sampleRate = SAMPLE_RATE
+         featureDim = 80
+      }
+
+      // 配置 Transducer 模型
+      val transducerConfig = OnlineTransducerModelConfig().apply {
+         encoder = paths.encoderPath
+         decoder = paths.decoderPath
+         joiner = paths.joinerPath
+      }
+
+      // 配置模型
+      val modelConfig = OnlineModelConfig().apply {
+         transducer = transducerConfig
+         tokens = paths.tokensPath
+         numThreads = 2
+         debug = true
+      }
+
+      val config = OnlineRecognizerConfig().apply {
+         this.featConfig = featConfig
+         this.modelConfig = modelConfig
+         enableEndpoint = true
+      }
+
+      // 创建识别器实例
+      recognizer = OnlineRecognizer(null, config)
+      Log.d(TAG, "✅ 识别器初始化成功")
+   } catch (e: Exception) {
+      Log.e(TAG, "❌ 初始化失败: ${e.message}", e)
+   }
+}
+
+```
+6. 初始化标点恢复模型
+```kotlin
+val modelFile = copyAssetToCache(ComposeAIApp.instance, "$punctuationDir/model.int8.onnx")
+try {
+   val modelConfig = OfflinePunctuationModelConfig(
+      ctTransformer = modelFile.absolutePath,
+      numThreads = 1,
+      debug = false,
+      provider = "cpu"
+   )
+
+   // 创建 OfflinePunctuationConfig
+   val config = OfflinePunctuationConfig(modelConfig)
+
+   // 创建标点恢复器实例
+   punctuation = OfflinePunctuation(null, config)
+   Log.d(TAG, "✅ 标点恢复器初始化成功")
+}catch (e: Exception) {
+   Log.e(TAG, "❌ 标点恢复器初始化失败: ${e.message}", e)
+}
+```
+7. 调用标点恢复
+```kotlin
+fun addPunctuation(text: String): String {
+    if (text.isBlank()) {
+        return text
+    }
+
+    return try {
+        val result = punctuation?.addPunctuation(text) ?: text
+        if (result != text) {
+            Log.d(TAG, "标点恢复: $result")
+        }
+        result
+    } catch (e: Exception) {
+        Log.e(TAG, "标点恢复失败: ${e.message}", e)
+        text
+    }
+}
+
+val result = addPunctuation("床前明月光疑似地上霜举头望明月低头思故乡")
+// 床前明月光，疑似地上霜。举头望明月，低头思故乡。
+```
+
 ---
 
 ## 四、模型文件配置
