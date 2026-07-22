@@ -1,8 +1,9 @@
 ## Hi there welcome to my profile👋
 
 - 🌱 The following documents were written after implementation during development, so please feel free to use them.
-  -  [Android 多风味（Product Flavors）配置指南](https://github.com/Yiwei099/Yiwei099/blob/main/AndroidProductFlavorsGuide.md)
-  -  [Sherpa 离线语音识别集成指南](https://github.com/Yiwei099/Yiwei099/blob/main/AndroidSherpaONNXGuide.md)
+  -  [Android 多风味（Product Flavors）配置指南 👉 给你的应用披上多种马甲](https://github.com/Yiwei099/Yiwei099/blob/main/AndroidProductFlavorsGuide.md)
+  -  [Sherpa 离线语音识别集成指南 👉 给你的应用脱离大厂的限制进行语音录入](https://github.com/Yiwei099/Yiwei099/blob/main/AndroidSherpaONNXGuide.md)
+  -  [低功耗蓝牙服务端/客户端双端收发通讯App 👉 物联网行业给智能设备配置 Wifi 案例](https://github.com/Yiwei099/BLE-WIFI)
 
 <!--
 **Yiwei099/Yiwei099** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
